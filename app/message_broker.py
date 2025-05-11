@@ -127,7 +127,7 @@ class AggregatorMessageBroker:
             # Start consuming both result streams concurrently
             await asyncio.gather(
                 self.consume_voice(),
-                # self.consume_image()
+                self.consume_image()
             )
         except Exception as e:
             logger.error(f"Error in start method: {str(e)}", exc_info=True)
@@ -228,8 +228,8 @@ class AggregatorMessageBroker:
         logger.info(f"Job {script_id} has components: {available_components}")
         
         # If both voice and image are available, publish ready event
-        # if "voice" in job and "image" in job:
-        if "voice" in job:
+        if "voice" in job and "image" in job:
+        # if "image" in job:
             logger.info(f"✅ All required components available for script_id: {script_id}")
             await self.publish_ready(script_id)
         else:
@@ -244,7 +244,7 @@ class AggregatorMessageBroker:
             ready_payload = {
                 "script": job.get("script"),
                 "voice": job.get("voice"),
-                # "image": job.get("image")
+                "image": job.get("image")
             }
             
             # Log payload size and content summary
